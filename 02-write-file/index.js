@@ -11,8 +11,16 @@ const text = {
   reset: '\x1b[0m',
 };
 
-const fileName = './output.txt';
+const fileName = 'output.txt';
 const filePath = path.resolve(__dirname, fileName);
+
+const writeStream = fs.createWriteStream(filePath);
+
+const handleError = (error) => {
+  if (error) throw error;
+};
+
+writeStream.on('error', handleError);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -20,10 +28,6 @@ const rl = readline.createInterface({
 });
 
 process.stdout.write(`${text.bold}Enter your text:${text.reset}${os.EOL}`);
-
-const handleError = (error) => {
-  if (error) throw error;
-};
 
 const writeData = (input) => {
   fs.appendFile(filePath, input + os.EOL, handleError);
