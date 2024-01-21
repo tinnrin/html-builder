@@ -68,7 +68,7 @@ async function handleTemplates() {
     });
 
     const templates = files
-      .filter((file) => file.isFile())
+      .filter((file) => file.isFile() && path.extname(file.name) === '.html')
       .map((file) => {
         const pathToFile = path.resolve(pathToFolder, file.name);
         return {
@@ -158,7 +158,7 @@ async function createFolder(folderName) {
 async function cleanDist() {
   try {
     const distPath = path.resolve(__dirname, 'project-dist');
-    await fsPromises.rm(distPath, { recursive: true });
+    await fsPromises.rm(distPath, { recursive: true, force: true });
   } catch (error) {
     console.error(error);
   }
@@ -168,7 +168,6 @@ async function createProject() {
   try {
     await cleanDist();
     await createFolder('project-dist');
-    // await getAssetsFolders();
     const pathToAssets = path.resolve(__dirname, 'assets');
     const pathToAssetsDist = path.resolve(__dirname, 'project-dist/assets');
 
